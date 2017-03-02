@@ -44,6 +44,38 @@ function getArray(req, res) {
   }
 }
 
+function postNewUser(req, res) {
+  var bridgeIp = config.bridgeIp;
+  if (req.body && req.body.bridgeIp) {
+    bridgeIp = req.body.bridgeIp;
+  }
+  var body = {"devicetype": "node.js#daylight-simulator"};
+  var options = {
+    method: 'POST',
+    url: 'http://' + bridgeIp + '/api',
+    headers: {
+      'content-type': 'application/json'
+    },
+    body: JSON.stringify(body)
+  };
+  request(options, function (error, response, body) {
+    body = JSON.parse(body);
+    if (error || body[0].error) {
+      return res.json({message: "Press Hue button!", done: false});
+    }
+    if (body[0].success && body[0].success.username) {
+      config.user = body[0].success.username;
+      config.bridgeIp = bridgeIp;
+      saveConfig(function (err) {
+        if (err) {
+          return res.status(500).json({error: "Saving failed."})
+        }
+        return res.json({message: "successful", done: true});
+      });
+    }
+  });
+}
+
 function newUser(req, res) {
   var bridgeIp = config.bridgeIp;
   if (req.body && req.body.bridgeIp) {
@@ -108,7 +140,7 @@ app.use(function (error, req, res, next) {
 });
 
 app.get('/user/new', expressStream.stream(), newUser);
-app.post('/user/new', expressStream.stream(), newUser);
+app.post('/user/new', postNewUser);
 
 
 app.get('/colors/intervals', function (req, res) {

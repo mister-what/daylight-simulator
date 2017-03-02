@@ -1,0 +1,18 @@
+{
+  "generator-fountain-angular1": {
+    "version": "1.0.0",
+    "props": {
+      "skipInstall": true,
+      "framework": "angular1",
+      "modules": "webpack",
+      "js": "js",
+      "ci": "",
+      "css": "scss",
+      "resolved": "/Users/swiip/Workspace/FountainJS/fountain/generator-fountain-angular1/generators/app/index.js",
+      "namespace": "fountain-angular1:app",
+      "_": [],
+      "sample": "hello",
+      "router": "uirouter"
+    }
+  }
+}
