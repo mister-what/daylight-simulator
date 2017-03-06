@@ -22,4 +22,6 @@ angular
   .config(routesConfig)
   .component('app', hello)
   .component('configPage', configPage)
-  .service('configService', require('./app/services/config.service'));
+  .service('configService', require('./app/services/config.service'))
+  .component('topBar', require('./app/components/toolbar/toolbar.component'))
+  .controller('hueBtnToastController', require('./app/components/toast/toast.controller.js'));

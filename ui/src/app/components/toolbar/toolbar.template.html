@@ -1,0 +1,33 @@
+<md-toolbar class="md-toolbar" style="z-index: 70;">
+  <div class="md-toolbar-tools" layout-align="space-between center">
+    <md-button class="md-icon-button" aria-label="Settings" ng-disabled="false" ng-click="$ctrl.toggleLeft()">
+      <md-icon md-svg-icon="/img/ic_menu_white_48px.svg"></md-icon>
+    </md-button>
+    
+    <md-button class="md-icon-button" aria-label="More">
+      <md-icon md-svg-icon="/img/ic_more_vert_white_48px.svg"></md-icon>
+    </md-button>
+  </div>
+</md-toolbar>
+<md-sidenav class="md-sidenav-left" md-component-id="left" md-whiteframe="4">
+  
+  <md-toolbar class="md-toolbar">
+  </md-toolbar>
+  
+  <md-content>
+    <md-list flex>
+      <md-subheader>Menu</md-subheader>
+      <md-list-item class="md-1-line" ui-sref="app" ng-click="$ctrl.closeLeft()">
+        <p>
+          Main
+        </p>
+      </md-list-item>
+      <md-list-item class="md-1-line" ui-sref="config" ng-click="$ctrl.closeLeft()">
+        <p>
+          Config
+        </p>
+      </md-list-item>
+    </md-list>
+  </md-content>
+
+</md-sidenav>

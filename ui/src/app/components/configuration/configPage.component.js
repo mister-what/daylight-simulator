@@ -10,18 +10,28 @@ module.exports = {
         ctrl.loaded = true;
         ctrl.saved = true;
         ctrl.config = result;
-        $timeout(function () {
-          ctrl.saved = null;
-        }, 5000);
+        $mdToast.show(
+          $mdToast.simple()
+            .textContent('Saved!')
+            .position('bottom left')
+            .hideDelay(3000)
+        );
       },
       failed: function (result) {
         ctrl.error = true;
         ctrl.loaded = true;
         ctrl.config = result;
+        $mdToast.show(
+          $mdToast.simple()
+            .textContent('Save failed...')
+            .position('bottom left')
+            .hideDelay(3000)
+        );
       }
     };
     ctrl.$onInit = onInit;
     ctrl.saveConfig = saveConfig;
+    ctrl.resetConfig = resetConfig;
     ctrl.newUser = newUser;
     
     function configRetrieveHandler(config) {
@@ -38,16 +48,31 @@ module.exports = {
       configService.setConfig(ctrl.config).then(saveHandler.successful, saveHandler.failed);
     }
     
-    function newUser() {
-      ctrl.pressHueBridgeButton = true;
-      configService.newUser().then(function () {
-        onInit();
+    function resetConfig() {
+      function configRetrieveHandler(config) {
+        ctrl.config = config;
         $mdToast.show(
           $mdToast.simple()
-            .textContent('Press Button on Hue Bridge')
-            .position('Bottom Left')
-            .hideDelay(30000)
+            .textContent('Config Reset!')
+            .position('bottom left')
+            .hideDelay(3000)
         );
+      }
+      
+      configService.getConfig().then(configRetrieveHandler, rejectHandler);
+    }
+    
+    function newUser() {
+      $mdToast.show({
+        hideDelay: 30000,
+        position: 'bottom left',
+        template: require('../toast/toast.template.html'),
+        controller: 'hueBtnToastController',
+        controllerAs: '$ctrl'
+      });
+      configService.newUser().then(function () {
+        $mdToast.hide();
+        onInit();
       });
     }
     
