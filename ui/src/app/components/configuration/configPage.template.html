@@ -1,3 +1,31 @@
 <div>
-    
+  <h1>General Configuration</h1>
+  <p ng-if="$ctrl.error">Error loading config</p>
+  <hr>
+  <md-content layout="row" layout-md>
+    <div layout="column" layout-padding>
+      <md-input-container>
+        <label>Hue Bridge IP</label>
+        <input ng-model="$ctrl.config.bridgeIp">
+      </md-input-container>
+      <md-input-container>
+        <label>Hue User</label>
+        <input ng-model="$ctrl.config.user">
+      </md-input-container>
+      <md-input-container>
+        <label>Device Number</label>
+        <input ng-model="$ctrl.config.light" type="number">
+      </md-input-container>
+      <md-button class="md-raised md-primary" ng-click="$ctrl.newUser()">New User</md-button>
+    </div>
+  </md-content>
+  
+  <div>
+    <label for="user">Hue User</label>
+    <input type="text" ng-model="$ctrl.config.user" id="user">
+    <button type="button" ng-click="$ctrl.newUser()">New User</button>
+    <span ng-if="$ctrl.pressHueBridgeButton">Press Button on Hue Bridge</span>
+  </div>
+  <button type="button" ng-click="$ctrl.saveConfig()">Save</button>
+  <span ng-if="$ctrl.saved">...Saved!</span>
 </div>
