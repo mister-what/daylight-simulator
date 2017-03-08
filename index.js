@@ -188,7 +188,7 @@ app.post("/colors/:time/new", function (req, res) {
     if (err) {
       return res.status(500).json({error: "Persisting failed."});
     }
-    return res.status(200).json({added: {time: time, color: color}});
+    return res.status(200).json(timeInterval.contentsObj);
   });
 });
 
