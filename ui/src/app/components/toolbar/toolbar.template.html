@@ -1,11 +1,20 @@
 <md-toolbar class="md-toolbar" style="z-index: 70;">
   <div class="md-toolbar-tools" layout-align="space-between center">
-    <md-button class="md-icon-button" aria-label="Settings" ng-disabled="false" ng-click="$ctrl.toggleLeft()">
-      <md-icon md-svg-icon="/img/ic_menu_white_48px.svg"></md-icon>
-    </md-button>
+    <div layout-align="start center" layout="row">
+      <md-button class="md-icon-button" aria-label="Settings" ng-disabled="false" ng-click="$ctrl.toggleLeft()"
+                 title="Toggle Menu">
+        <md-icon md-svg-icon="/img/ic_menu_white_48px.svg"></md-icon>
+      </md-button>
+      <md-button layout="row" class="md-icon-button" aria-label="Home" ng-disabled="false" ui-sref="app" title="Go Home"
+                 style="width: 200px;" layout-align="start center">
+        <span>Daylight Simulator</span>
+      </md-button>
+    </div>
+    
     
     <md-button class="md-icon-button" aria-label="More">
-      <md-icon md-svg-icon="/img/ic_more_vert_white_48px.svg"></md-icon>
+      <md-icon md-svg-icon="/img/sunset.svg"></md-icon>
+    
     </md-button>
   </div>
 </md-toolbar>
