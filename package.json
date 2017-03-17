@@ -6,8 +6,16 @@
   "scripts": {
     "start": "node index.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mister-what/daylight-simulator.git"
+  },
   "author": "Jonas Winzen",
   "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mister-what/daylight-simulator/issues"
+  },
+  "homepage": "https://github.com/mister-what/daylight-simulator#readme"
   "dependencies": {
     "body-parser": "1.16.1",
     "d3": "4.6.0",
