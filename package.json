@@ -15,7 +15,7 @@
   "bugs": {
     "url": "https://github.com/mister-what/daylight-simulator/issues"
   },
-  "homepage": "https://github.com/mister-what/daylight-simulator#readme"
+  "homepage": "https://github.com/mister-what/daylight-simulator#readme",
   "dependencies": {
     "body-parser": "1.16.1",
     "d3": "4.6.0",
