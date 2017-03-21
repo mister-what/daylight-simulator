@@ -1,4 +1,6 @@
 const gulp = require('gulp');
+var webpackSettings = require("../conf/webpack.conf");
+var webpack = require("webpack");
 const conf = require('../conf/gulp.conf');
 const browserSync = require('browser-sync');
 var url = require('url');
@@ -7,6 +9,11 @@ const spa = require('browser-sync-spa');
 
 const browserSyncConf = require('../conf/browsersync.conf');
 const browserSyncDistConf = require('../conf/browsersync-dist.conf');
+
+var webpackDevMiddleware = require("webpack-dev-middleware");
+var webpackHotMiddleware = require("webpack-hot-middleware");
+
+var bundler = webpack(webpackSettings);
 
 browserSync.use(spa());
 
@@ -22,10 +29,17 @@ gulp.task('browsersync:proxy', function() {
     port: 5000,
     server: {
       baseDir: [
-        conf.paths.tmp,
+        webpackSettings.output.path,
         conf.paths.src
       ],
-      middleware: [proxy(proxyOptions)]
+      middleware: [
+        proxy(proxyOptions),
+        webpackDevMiddleware(bundler, {
+          publicPath: webpackSettings.output.publicPath,
+          stats: {colors: true}
+        }),
+        webpackHotMiddleware(bundler)
+      ]
     }
   });
 });

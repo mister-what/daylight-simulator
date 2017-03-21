@@ -7,6 +7,7 @@ var hueColor = require("./interpolateHueColor");
 var times = require("./times");
 var TimeInterval = require("./hueTimeIntervall");
 var timeInterval = new TimeInterval();
+var configDone = true;
 
 function transitionTo(color, time, cb) {
   if (!cb) {
@@ -53,8 +54,10 @@ function check2() {
   var now = new Date();
   transitionTo(timeInterval.getColorForNow(), 30 * 10, function (err, result) {
     if (err) {
+      configDone = false;
       return console.error(err);
     }
+    configDone = true;
     console.log("result", timeString(now), JSON.stringify(result, null, 2));
   });
 }
@@ -238,6 +241,12 @@ function newColorTimeConfig(req, res) {
   });
 }
 
+function getConfigDone(req, res) {
+  res.json({
+    configDone: configDone
+  });
+}
+
 module.exports = {
   getArray: getArray,
   putColorIntervals: putColorIntervals,
@@ -245,6 +254,7 @@ module.exports = {
   newUser: newUser,
   postNewUser: postNewUser,
   getConfig: getConfig,
+  getConfigDone: getConfigDone,
   putConfig: putConfig,
   newColorTimeConfig: newColorTimeConfig,
   check2: check2,

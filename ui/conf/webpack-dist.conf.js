@@ -3,8 +3,6 @@ const conf = require('./gulp.conf');
 const path = require('path');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const pkg = require('../package.json');
 const autoprefixer = require('autoprefixer');
 
 module.exports = {
@@ -20,14 +18,19 @@ module.exports = {
         test: /\.js$/,
         exclude: /node_modules/,
         loader: 'eslint-loader',
-        enforce: 'pre'
+        enforce: 'pre',
+        options: {
+          cache: true
+        }
       },
       {
         test: /\.(css|scss)$/,
-        loaders: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: 'css-loader?minimize!sass-loader!postcss-loader'
-        })
+        loaders: [
+          'style-loader',
+          'css-loader',
+          'sass-loader',
+          'postcss-loader'
+        ]
       },
       {
         test: /\.js$/,
@@ -46,28 +49,32 @@ module.exports = {
   },
   plugins: [
     new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.NoEmitOnErrorsPlugin(),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: "vendor",
+      minChunks: function (module) {
+        // this assumes your vendor imports exist in the node_modules directory
+        return module.context && module.context.indexOf("node_modules") !== -1;
+      }
+    }),
+    new webpack.optimize.UglifyJsPlugin({
+      compress: true,
+      mangle: true
+    }),
     new HtmlWebpackPlugin({
       template: conf.path.src('index.html')
     }),
-    new webpack.optimize.UglifyJsPlugin({
-      output: {comments: false},
-      compress: {unused: true, dead_code: true, warnings: false} // eslint-disable-line camelcase
-    }),
-    new ExtractTextPlugin('index-[contenthash].css'),
-    new webpack.optimize.CommonsChunkPlugin({name: 'vendor'}),
     new webpack.LoaderOptionsPlugin({
       options: {
         postcss: () => [autoprefixer]
-      }
+      },
+      debug: true
     })
   ],
+  devtool: "source-map",
   output: {
-    path: path.join(process.cwd(), conf.paths.dist),
-    filename: '[name]-[hash].js'
+    path: path.join(process.cwd(), conf.paths.tmp),
+    publicPath: '/',
+    filename: '[name].[hash].js'
   },
-  entry: {
-    app: `./${conf.path.src('index')}`,
-    vendor: Object.keys(pkg.dependencies)
-  }
+  entry: {index: ['webpack/hot/dev-server', './src/index.js']}
 };

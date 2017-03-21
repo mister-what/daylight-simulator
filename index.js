@@ -26,6 +26,7 @@ app.get("/colors/byMinute", configController.getArray);
 app.get("/colors/byMinute/:type", configController.getArray);
 app.get("/config", configController.getConfig);
 app.put("/config", configController.putConfig);
+app.get("/config/done", configController.getConfigDone);
 app.post("/colors/:time/new", configController.newColorTimeConfig);
 
 

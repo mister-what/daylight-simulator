@@ -18,7 +18,10 @@ module.exports = {
         test: /\.js$/,
         exclude: /node_modules/,
         loader: 'eslint-loader',
-        enforce: 'pre'
+        enforce: 'pre',
+        options: {
+          cache: true
+        }
       },
       {
         test: /\.(css|scss)$/,
@@ -32,7 +35,7 @@ module.exports = {
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        loaders: [
+        use: [
           'ng-annotate-loader'
         ]
       },
@@ -46,21 +49,34 @@ module.exports = {
   },
   plugins: [
     new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.NoEmitOnErrorsPlugin(),
-    new HtmlWebpackPlugin({
-      template: conf.path.src('index.html')
+    new webpack.optimize.CommonsChunkPlugin({
+      name: "vendor",
+      minChunks: function (module) {
+        // this assumes your vendor imports exist in the node_modules directory
+        return module.context && module.context.indexOf("node_modules") !== -1;
+      }
     }),
+    /*new webpack.optimize.UglifyJsPlugin({
+     compress: {warnings: false},
+     mangle: true,
+     test: /vendor\.([a-zA-Z]|[0-9])+\.js$/i
+     }),*/
     new webpack.LoaderOptionsPlugin({
       options: {
         postcss: () => [autoprefixer]
       },
       debug: true
+    }),
+    new webpack.HotModuleReplacementPlugin(),
+    new HtmlWebpackPlugin({
+      template: conf.path.src('index.html')
     })
   ],
   devtool: "inline-source-map",
   output: {
     path: path.join(process.cwd(), conf.paths.tmp),
-    filename: 'index.js'
+    publicPath: '/',
+    filename: '[name].[hash].js'
   },
-  entry: `./${conf.path.src('index')}`
+  entry: {index: ['webpack-hot-middleware/client?reload=true', './src/index.js']}
 };
