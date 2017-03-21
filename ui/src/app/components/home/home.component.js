@@ -19,9 +19,8 @@ module.exports = {
     }
     
     function onChanges(change) {
-      console.log(change);
       if (change.configDone) {
-        // todo
+        // todo...
       }
       
     }

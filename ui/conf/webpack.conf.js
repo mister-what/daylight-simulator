@@ -2,6 +2,7 @@ const webpack = require('webpack');
 const conf = require('./gulp.conf');
 const path = require('path');
 
+var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const autoprefixer = require('autoprefixer');
 
@@ -49,13 +50,13 @@ module.exports = {
   },
   plugins: [
     new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.optimize.CommonsChunkPlugin({
+    /*new webpack.optimize.CommonsChunkPlugin({
       name: "vendor",
       minChunks: function (module) {
         // this assumes your vendor imports exist in the node_modules directory
         return module.context && module.context.indexOf("node_modules") !== -1;
       }
-    }),
+     }),*/
     /*new webpack.optimize.UglifyJsPlugin({
      compress: {warnings: false},
      mangle: true,
@@ -67,16 +68,20 @@ module.exports = {
       },
       debug: true
     }),
+    //new BundleAnalyzerPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
       template: conf.path.src('index.html')
     })
   ],
-  devtool: "inline-source-map",
+  devtool: "source-map",
   output: {
     path: path.join(process.cwd(), conf.paths.tmp),
     publicPath: '/',
-    filename: '[name].[hash].js'
+    filename: '[name].[hash].js',
+    chunkFilename: "[name].js"
   },
-  entry: {index: ['webpack-hot-middleware/client?reload=true', './src/index.js']}
+  entry: {
+    app: ['webpack-hot-middleware/client?reload=true', './src/app/app.js']
+  }
 };
